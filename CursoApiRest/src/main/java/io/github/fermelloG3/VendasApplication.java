@@ -23,37 +23,12 @@ public class VendasApplication {
         return args -> {
 
             System.out.println("Inserindo Clientes com JPA");
-            clientes.salvar(new Cliente("Fernando"));
-            clientes.salvar(new Cliente("Gregorio"));
+            clientes.save(new Cliente("Fernando"));
+            clientes.save(new Cliente("Gregorio"));
 
-            System.out.println("Obtendo Clientes");
-            List<Cliente> todosClientes = clientes.obterTodos();
-            todosClientes.forEach(System.out::println);
-/*
+            boolean existe = clientes.existsByNome("Fernando");
+            System.out.println("Existe um nome Fernando na base de dados? " + existe);
 
-
-
-            System.out.println("Buscando clientes por nome");
-            clientes.obterPorNome("nan").forEach(System.out::println);
-
-            System.out.println("Atualizando Clientes");
-            todosClientes.forEach(c -> {
-                c.setNome(c.getNome() + ".Atualizado");
-                clientes.atualizar(c);
-            });
-            todosClientes.forEach(System.out::println);
-
-            System.out.println("Deletando Clientes");
-            clientes.obterTodos().forEach(c -> {
-                clientes.delete(c);
-            });
-
-            todosClientes = clientes.obterTodos();
-            if(todosClientes.isEmpty()){
-                System.out.println("Nenhum cliente encontrado");
-            }else {
-                todosClientes.forEach(System.out::println);
-            }*/
 
         };
     }
