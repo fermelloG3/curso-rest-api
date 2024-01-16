@@ -22,13 +22,15 @@ public class VendasApplication {
     public CommandLineRunner init(@Autowired Clientes clientes){
         return args -> {
 
-            System.out.println("Inserindo Clientes");
+            System.out.println("Inserindo Clientes com JPA");
             clientes.salvar(new Cliente("Fernando"));
             clientes.salvar(new Cliente("Gregorio"));
 
             System.out.println("Obtendo Clientes");
             List<Cliente> todosClientes = clientes.obterTodos();
             todosClientes.forEach(System.out::println);
+/*
+
 
 
             System.out.println("Buscando clientes por nome");
@@ -51,7 +53,7 @@ public class VendasApplication {
                 System.out.println("Nenhum cliente encontrado");
             }else {
                 todosClientes.forEach(System.out::println);
-            }
+            }*/
 
         };
     }
