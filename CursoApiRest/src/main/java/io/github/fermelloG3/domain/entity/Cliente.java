@@ -2,6 +2,7 @@ package io.github.fermelloG3.domain.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 @Entity
 public class Cliente {
 
@@ -11,6 +12,17 @@ public class Cliente {
     private Integer id;
     @Column(name = "nome", length = 100)
     private String nome;
+    @OneToMany(mappedBy = "cliente")
+    @JoinColumn
+    private List<Pedido> pedidos;
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
 
     public Integer getId() {
         return id;

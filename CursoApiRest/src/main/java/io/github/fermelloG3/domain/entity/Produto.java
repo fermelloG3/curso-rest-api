@@ -37,7 +37,7 @@ public class Produto {
         return preco;
     }
 
-    public void setPrec(BigDecimal preco) {
+    public void setPreco(BigDecimal preco) {
         this.preco = preco;
     }
 }
