@@ -15,7 +15,6 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente")
     @JoinColumn
     private List<Pedido> pedidos;
-
     public List<Pedido> getPedidos() {
         return pedidos;
     }
