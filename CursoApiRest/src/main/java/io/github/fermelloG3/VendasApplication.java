@@ -29,6 +29,9 @@ public class VendasApplication {
             boolean existe = clientes.existsByNome("Fernando");
             System.out.println("Existe um nome Fernando na base de dados? " + existe);
 
+            List<Cliente> clientesPorNombre = clientes.encontrarPorNome("nan");
+            clientesPorNombre.forEach(System.out::println);
+
 
         };
     }

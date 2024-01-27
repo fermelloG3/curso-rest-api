@@ -1,11 +1,21 @@
 package io.github.fermelloG3.domain.entity;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "produto")
 public class Produto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Integer id;
+    @Column(name = "descricao")
     private String descricao;
-    private BigDecimal prec;
+    @Column(name = "preco unitario")
+    private BigDecimal preco;
 
     public Integer getId() {
         return id;
@@ -23,11 +33,11 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public BigDecimal getPrec() {
-        return prec;
+    public BigDecimal getPreco() {
+        return preco;
     }
 
-    public void setPrec(BigDecimal prec) {
-        this.prec = prec;
+    public void setPrec(BigDecimal preco) {
+        this.preco = preco;
     }
 }
