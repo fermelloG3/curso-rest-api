@@ -5,8 +5,10 @@ import io.github.fermelloG3.domain.repository.Clientes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,24 +25,17 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity getClienteById(@PathVariable Integer id){
-        Optional<Cliente> cliente = clientes.findById(id);
-
-        if(cliente.isPresent()){
-            return ResponseEntity.ok(cliente.get());
-        }
-        return ResponseEntity.notFound().build();
+    public Cliente getClienteById(@PathVariable Integer id){
+        return clientes.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não encontrado"));
     }
     @PostMapping
-    @ResponseBody
     public ResponseEntity saveCliente(@RequestBody Cliente cliente){
         Cliente saveCliente = clientes.save(cliente);
         return ResponseEntity.ok(saveCliente);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseBody
     public ResponseEntity deletarCliente(@PathVariable Integer id){
 
         Optional<Cliente> deletedCliente = clientes.findById(id);
@@ -54,7 +49,6 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    @ResponseBody
     public ResponseEntity update(@PathVariable Integer id, @RequestBody Cliente cliente){
         return clientes
                 .findById(id)
