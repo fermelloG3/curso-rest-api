@@ -1,32 +1,67 @@
 package io.github.fermelloG3.rest.controller;
 
-import io.github.fermelloG3.domain.entity.Cliente;
-import io.github.fermelloG3.domain.repository.Clientes;
+import io.github.fermelloG3.domain.entity.Produto;
+import io.github.fermelloG3.domain.repository.Produtos;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/produto")
 public class ProdutoController {
 
     @Autowired
-    private Clientes clientes;
+    private Produtos produtos;
 
-    public ProdutoController (Clientes clientes){
-        this.clientes = clientes;
+    public ProdutoController (Produtos produtos){
+        this.produtos = produtos;
     }
 
+    @GetMapping("{id}")
+    public Produto getProdutoById(@PathVariable Integer id){
+        return produtos.findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Produto não encontrado"));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Produto saveProduto(Produto produto){
+        return produtos.save(produto);
+    }
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateProduto(@PathVariable Integer id, Produto produto){
+        produtos.findById(id)
+                .map(produtoAtualizado -> {
+                    produto.setId(produtoAtualizado.getId());
+                    produtos.save(produto);
+                    return produtoAtualizado;
+                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Produto não encontrado"));
+    }
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduto(Integer id){
+        produtos.findById(id)
+                .map(produtoDeletado->{
+                    produtos.delete(produtoDeletado);
+                    return produtoDeletado;
+                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Produto não encontrado"));
+    }
     @GetMapping
-    public Cliente getProdutoById(Integer id){
-        return clientes.findById(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não encontrado"));
-    }
+    public List<Produto> findProduto(Produto filtro){
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withIgnoreCase()
+                .withStringMatcher(
+                        ExampleMatcher.StringMatcher.CONTAINING);
 
-    public void saveProduto
+        Example example = Example.of(filtro,matcher);
+
+        return produtos.findAll(example);
+    }
 
 }
