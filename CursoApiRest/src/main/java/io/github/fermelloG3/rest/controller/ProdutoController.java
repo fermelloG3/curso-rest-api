@@ -30,22 +30,25 @@ public class ProdutoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Produto saveProduto(Produto produto){
+    public Produto saveProduto(@RequestBody Produto produto){
         return produtos.save(produto);
     }
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateProduto(@PathVariable Integer id, Produto produto){
-        produtos.findById(id)
-                .map(produtoAtualizado -> {
-                    produto.setId(produtoAtualizado.getId());
+    public void update( @PathVariable Integer id, @RequestBody Produto produto ){
+        produtos
+                .findById(id)
+                .map( p -> {
+                    produto.setId(p.getId());
                     produtos.save(produto);
-                    return produtoAtualizado;
-                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Produto não encontrado"));
+                    return produto;
+                }).orElseThrow( () ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Produto não encontrado."));
     }
-    @DeleteMapping
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduto(Integer id){
+    public void deleteProduto(@PathVariable Integer id){
         produtos.findById(id)
                 .map(produtoDeletado->{
                     produtos.delete(produtoDeletado);
