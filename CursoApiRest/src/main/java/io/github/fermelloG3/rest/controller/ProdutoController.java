@@ -31,6 +31,7 @@ public class ProdutoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Produto saveProduto(@RequestBody Produto produto){
+
         return produtos.save(produto);
     }
     @PutMapping("{id}")
