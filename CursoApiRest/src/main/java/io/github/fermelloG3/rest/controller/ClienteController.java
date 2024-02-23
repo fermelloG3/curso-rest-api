@@ -2,6 +2,7 @@ package io.github.fermelloG3.rest.controller;
 
 import io.github.fermelloG3.domain.entity.Cliente;
 import io.github.fermelloG3.domain.repository.Clientes;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -31,7 +32,7 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente saveCliente(@RequestBody Cliente cliente){
+    public Cliente saveCliente(@RequestBody @Valid Cliente cliente){
         return clientes.save(cliente);
     }
 
