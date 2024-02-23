@@ -47,7 +47,6 @@ public class PedidoServiceImpl implements PedidoService {
         itemPedidoRepository.saveAll(itemPedidos);
         pedido.setItens(itemPedidos);
         return pedido;
-
     }
 
     @Override
