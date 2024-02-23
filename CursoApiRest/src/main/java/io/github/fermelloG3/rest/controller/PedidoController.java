@@ -2,6 +2,8 @@ package io.github.fermelloG3.rest.controller;
 
 import io.github.fermelloG3.domain.entity.ItemPedido;
 import io.github.fermelloG3.domain.entity.Pedido;
+import io.github.fermelloG3.domain.enums.StatusPedido;
+import io.github.fermelloG3.rest.dto.AtualicacaoStatusPedidoDTO;
 import io.github.fermelloG3.rest.dto.InformacaoItemPedidoDTO;
 import io.github.fermelloG3.rest.dto.InformacoesPedidoDTO;
 import io.github.fermelloG3.rest.dto.PedidoDto;
@@ -43,6 +45,15 @@ public class PedidoController {
 
     }
 
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id , @RequestBody AtualicacaoStatusPedidoDTO dto){
+        String novoStatus = dto.getNovoStatus();
+        service.atualizaStatus(id, StatusPedido.valueOf(novoStatus));
+
+
+    }
+
     private InformacoesPedidoDTO converter(Pedido pedido){
         return InformacoesPedidoDTO
                 .builder()
@@ -69,8 +80,5 @@ public class PedidoController {
                         .quantidade(itemPedido.getQuantidade())
                         .build()
         ).collect(Collectors.toList());
-
     }
-
-
 }

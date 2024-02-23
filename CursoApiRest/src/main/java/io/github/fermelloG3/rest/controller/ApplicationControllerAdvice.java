@@ -1,5 +1,6 @@
 package io.github.fermelloG3.rest.controller;
 
+import io.github.fermelloG3.exception.PedidoNaoEncontradoException;
 import io.github.fermelloG3.exception.RegraNegocioException;
 import io.github.fermelloG3.rest.ApiErrors;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,12 @@ public class ApplicationControllerAdvice {
     public ApiErrors handleRegraNegocioExeption(RegraNegocioException ex){
         String mensagemErro = ex.getMessage();
         return new ApiErrors(mensagemErro);
+    }
+
+    @ExceptionHandler(PedidoNaoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handlePedidoNaoEncontradoExeption(PedidoNaoEncontradoException ex){
+        return new ApiErrors(ex.getMessage());
     }
 
 

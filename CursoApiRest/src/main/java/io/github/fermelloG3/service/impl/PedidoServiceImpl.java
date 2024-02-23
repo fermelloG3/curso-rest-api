@@ -9,6 +9,7 @@ import io.github.fermelloG3.domain.repository.Clientes;
 import io.github.fermelloG3.domain.repository.Pedidos;
 import io.github.fermelloG3.domain.repository.Produtos;
 import io.github.fermelloG3.domain.repository.itemsPedido;
+import io.github.fermelloG3.exception.PedidoNaoEncontradoException;
 import io.github.fermelloG3.exception.RegraNegocioException;
 import io.github.fermelloG3.rest.dto.ItemPedidoDTO;
 import io.github.fermelloG3.rest.dto.PedidoDto;
@@ -54,6 +55,16 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Optional<Pedido> obterPedidoCompleto(Integer id) {
         return repository.findByIdFetchItens(id);
+    }
+
+    @Override
+    @Transactional
+    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
+        repository.findById(id)
+                .map( pedido -> {
+                    pedido.setStatus(statusPedido);
+                    return repository.save(pedido);
+                }).orElseThrow(()-> new PedidoNaoEncontradoException());
     }
 
     private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> items){
