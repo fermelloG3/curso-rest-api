@@ -8,6 +8,7 @@ import io.github.fermelloG3.rest.dto.InformacaoItemPedidoDTO;
 import io.github.fermelloG3.rest.dto.InformacoesPedidoDTO;
 import io.github.fermelloG3.rest.dto.PedidoDto;
 import io.github.fermelloG3.service.PedidoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class PedidoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer save(@RequestBody PedidoDto dto){
+    public Integer save(@RequestBody @Valid PedidoDto dto){
         Pedido pedido = service.salvar(dto);
         return pedido.getId();
     }
@@ -47,7 +48,7 @@ public class PedidoController {
 
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateStatus(@PathVariable Integer id , @RequestBody AtualicacaoStatusPedidoDTO dto){
+    public void updateStatus(@PathVariable Integer id , @RequestBody @Valid AtualicacaoStatusPedidoDTO dto){
         String novoStatus = dto.getNovoStatus();
         service.atualizaStatus(id, StatusPedido.valueOf(novoStatus));
 
