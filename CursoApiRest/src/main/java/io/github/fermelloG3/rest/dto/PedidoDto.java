@@ -1,5 +1,6 @@
 package io.github.fermelloG3.rest.dto;
 
+import io.github.fermelloG3.validation.NotEmptyList;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 public class PedidoDto {
 
-    @NotNull(message = "Informe o codigo do Cliente.")
+    @NotNull(message = "{campo.codigo-cliente.obrigatorio}")
     private Integer cliente;
-    @NotNull(message = "Campo total de Pedido é obrigatório.")
+    @NotNull(message = "{campo.total-pedido.obrigatorio}")
     private BigDecimal total;
+    @NotEmptyList(message = "{campo.items-pedido.obrigatorio}")
     private List<ItemPedidoDTO> items;
 }
